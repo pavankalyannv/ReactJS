@@ -1,6 +1,7 @@
-import React, {useReducer} from 'react';
+import React, {useState, useReducer} from 'react';
 
 const initialValues = 0;
+
 const reducerCounter = (state, action) =>{
 
     switch(action){
@@ -17,29 +18,44 @@ const reducerCounter = (state, action) =>{
 
 
 const CounterOne = () =>{
+    const err = "No Errors!"
+    const [errorMsg, setErrorMsg] = useState(err);
     const [count, dispatch] = useReducer(reducerCounter, initialValues);
     var msg = "Total Count: ";
    
+    const incrementButtonHandler = () =>{
+      
+        dispatch('increment');
+        setErrorMsg(err);
+    };
+
+    const resetButtonHandler = () =>{
+      
+        dispatch('reset');
+        setErrorMsg(" Values Reseted Successfully! ");
+    };
+    
     const decrementButtonHandler = () =>{
       
         if (count>0){
             console.log(count);
            dispatch('decrement');
+          
         }
         else{
-            msg=  "min value reached ";
-            
+           setErrorMsg(" Min value can't be less than ZERO");
         }
     };
     
     return(
     <div>
-        <div> </div>
+        
         <h1>{msg} - {count} </h1>
-        <button onClick={() => dispatch('increment')}> Increment </button>
+        <button onClick={incrementButtonHandler}> Increment </button>
         
         <button onClick={decrementButtonHandler}> Decrement </button>
-        <button onClick={() => dispatch('reset')}> Reset </button>
+        <button onClick={resetButtonHandler}> Reset </button>
+        <h1>{errorMsg} </h1>
     </div>
     );
 
